@@ -1,0 +1,14 @@
+# Core dependencies for TinyLlama benchmark
+# For macOS with Apple Silicon, install with Metal support:
+# CMAKE_ARGS="-DLLAMA_METAL=on" pip install llama-cpp-python
+llama-cpp-python>=0.2.0
+
+# System monitoring for memory usage tracking
+psutil>=5.8.0
+
+# Optional: for downloading models from Hugging Face
+huggingface-hub>=0.16.0
+
+# Installation notes:
+# macOS: CMAKE_ARGS="-DLLAMA_METAL=on" pip install -r requirements.txt
+# Other platforms: pip install -r requirements.txt

@@ -1,0 +1,19 @@
+What is quantization in machine learning?
+
+Explain the difference between edge computing and cloud computing.
+
+What are the main advantages of running AI models locally?
+
+How does model compression affect inference speed?
+
+What is the trade-off between model size and accuracy?
+
+Describe what makes a neural network suitable for edge deployment.
+
+What is the role of quantization in reducing model memory usage?
+
+How do you optimize AI models for mobile devices?
+
+What are the key considerations for deploying AI at the edge?
+
+Explain the concept of model pruning in neural networks.
