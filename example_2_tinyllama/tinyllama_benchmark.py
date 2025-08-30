@@ -31,82 +31,84 @@ def load_prompts():
         print("Warning: prompts.txt not found, using default prompt")
         return "What is quantization in machine learning?"
 
-parser = argparse.ArgumentParser(description="Benchmark TinyLlama performance for edge AI applications.")
-parser.add_argument("--model", type=str, default="Q4_K_M", help="Model variant (Q4_K_M, Q8_0)")
-parser.add_argument("--threads", type=int, default=4, help="Number of CPU threads")
-parser.add_argument("--ctx", type=int, default=512, help="Context window size")
-parser.add_argument("--tokens", type=int, default=128, help="Number of tokens to generate")
-args = parser.parse_args()
+def validate_model_path(model_name):
+    """Validate and convert model name to full path"""
+    # Convert simple model name to full path if needed
+    if not model_name.endswith('.gguf'):
+        model_path = f"models/tinyllama-1.1b-chat-v1.0.{model_name}.gguf"
+    else:
+        model_path = model_name
 
-# Convert simple model name to full path if needed
-if not args.model.endswith('.gguf'):
-    model_path = f"models/tinyllama-1.1b-chat-v1.0.{args.model}.gguf"
-else:
-    model_path = args.model
-
-# Check if model file exists
-if not os.path.exists(model_path):
-    available_models = []
-    models_dir = "models"
-    if os.path.exists(models_dir):
-        for file in os.listdir(models_dir):
-            if file.endswith('.gguf'):
-                variant = file.split('.')[-2] if '.' in file else file
-                available_models.append(f"  {variant}")
-    
-    error_msg = f"""Error: Model file not found: {model_path}
+    # Check if model file exists
+    if not os.path.exists(model_path):
+        available_models = []
+        models_dir = "models"
+        if os.path.exists(models_dir):
+            for file in os.listdir(models_dir):
+                if file.endswith('.gguf'):
+                    variant = file.split('.')[-2] if '.' in file else file
+                    available_models.append(f"  {variant}")
+        
+        error_msg = f"""Error: Model file not found: {model_path}
 
 Available models:
 {chr(10).join(available_models) if available_models else "  None found"}
 
 Usage: python {os.path.basename(__file__)} --model Q4_K_M"""
-    print(error_msg)
-    exit(1)
+        raise FileNotFoundError(error_msg)
+    
+    return model_path
 
-# Get model info
-if "Q4_K_M" in model_path:
-    model_info = "4-bit quantization (balanced)"
-elif "Q8_0" in model_path:
-    model_info = "8-bit quantization (best quality, slowest)"
-else:
-    model_info = "Custom configuration"
+def get_model_info(model_path):
+    """Get human-readable model information"""
+    if "Q4_K_M" in model_path:
+        return "4-bit quantization (balanced)"
+    elif "Q8_0" in model_path:
+        return "8-bit quantization (best quality, slowest)"
+    else:
+        return "Custom configuration"
 
-header = f"""TinyLlama Edge AI Benchmark
+def load_model(model_path, threads, context_size):
+    """Load the LLM model and return it along with memory usage"""
+    initial_memory = get_memory_usage()
+    print("Loading model...")
+    
+    llm = Llama(model_path=model_path, n_threads=threads, n_ctx=context_size, verbose=False)
+    model_loaded_memory = get_memory_usage()
+    model_memory = model_loaded_memory - initial_memory
+    
+    return llm, model_memory, model_loaded_memory
+
+def run_inference(llm, prompt, max_tokens):
+    """Run inference on the model and return results with timing"""
+    formatted_prompt = f"Question: {prompt}\n\nAnswer:"
+    
+    start_time = time.time()
+    output = llm(formatted_prompt, max_tokens=max_tokens)
+    end_time = time.time()
+    
+    duration = end_time - start_time
+    tokens_per_sec = max_tokens / duration
+    response_text = output["choices"][0]["text"].strip()
+    
+    return response_text, duration, tokens_per_sec
+
+def print_header(model_path, model_info, threads, context_size, max_tokens):
+    """Print benchmark header information"""
+    header = f"""TinyLlama Edge AI Benchmark
 Model: {os.path.basename(model_path)}
 Type: {model_info}
-Threads: {args.threads}, Context: {args.ctx}, Tokens: {args.tokens}
+Threads: {threads}, Context: {context_size}, Tokens: {max_tokens}
 {'-' * 50}"""
-print(header)
+    print(header)
 
-# Measure memory before model loading
-initial_memory = get_memory_usage()
-print("Loading model and running inference...")
-
-llm = Llama(model_path=model_path, n_threads=args.threads, n_ctx=args.ctx, verbose=False)
-model_loaded_memory = get_memory_usage()
-
-raw_prompt = load_prompts()
-# Format the prompt to encourage a complete answer
-prompt = f"Question: {raw_prompt}\n\nAnswer:"
-
-print(f"Selected prompt: {raw_prompt}")
-start = time.time()
-output = llm(prompt, max_tokens=args.tokens)
-end = time.time()
-final_memory = get_memory_usage()
-
-duration = end - start
-tokens_per_sec = args.tokens / duration
-
-# Calculate memory usage
-model_memory = model_loaded_memory - initial_memory
-inference_memory = final_memory - model_loaded_memory
-total_memory = final_memory - initial_memory
-
-results = f"""
+def print_results(response_text, duration, tokens_per_sec, model_memory, 
+                 inference_memory, total_memory, final_memory, threads):
+    """Print benchmark results"""
+    results = f"""
 Model Response:
 {'-' * 50}
-{output["choices"][0]["text"].strip()}
+{response_text}
 {'-' * 50}
 
 Performance Results:
@@ -120,5 +122,55 @@ Inference overhead: {inference_memory:.1f} MB
 Total usage: {total_memory:.1f} MB
 Current RAM: {final_memory:.1f} MB
 
-Note: This inference ran locally on your device using {args.threads} CPU threads."""
-print(results)
+Note: This inference ran locally on your device using {threads} CPU threads."""
+    print(results)
+
+def parse_arguments():
+    """Parse command line arguments"""
+    parser = argparse.ArgumentParser(description="Benchmark TinyLlama performance for edge AI applications.")
+    parser.add_argument("--model", type=str, default="Q4_K_M", help="Model variant (Q4_K_M, Q8_0)")
+    parser.add_argument("--threads", type=int, default=4, help="Number of CPU threads")
+    parser.add_argument("--ctx", type=int, default=512, help="Context window size")
+    parser.add_argument("--tokens", type=int, default=128, help="Number of tokens to generate")
+    return parser.parse_args()
+
+def main():
+    """Main function to orchestrate the benchmark"""
+    try:
+        # Parse command line arguments
+        args = parse_arguments()
+        
+        # Validate model path
+        model_path = validate_model_path(args.model)
+        model_info = get_model_info(model_path)
+        
+        # Print benchmark header
+        print_header(model_path, model_info, args.threads, args.ctx, args.tokens)
+        
+        # Load model and measure memory
+        llm, model_memory, model_loaded_memory = load_model(model_path, args.threads, args.ctx)
+        
+        # Load prompt and run inference
+        prompt = load_prompts()
+        print(f"Selected prompt: {prompt}")
+        
+        response_text, duration, tokens_per_sec = run_inference(llm, prompt, args.tokens)
+        
+        # Calculate final memory usage
+        final_memory = get_memory_usage()
+        inference_memory = final_memory - model_loaded_memory
+        total_memory = final_memory - get_memory_usage() + model_memory + inference_memory
+        
+        # Print results
+        print_results(response_text, duration, tokens_per_sec, model_memory, 
+                     inference_memory, total_memory, final_memory, args.threads)
+        
+    except FileNotFoundError as e:
+        print(e)
+        exit(1)
+    except Exception as e:
+        print(f"Error: {e}")
+        exit(1)
+
+if __name__ == "__main__":
+    main()
