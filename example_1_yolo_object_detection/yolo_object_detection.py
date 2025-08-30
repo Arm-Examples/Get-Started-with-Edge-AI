@@ -4,85 +4,117 @@ import psutil
 import argparse
 from ultralytics import YOLO
 
-# Command line argument parsing
-parser = argparse.ArgumentParser(description="YOLOv8 object detection with webcam")
-parser.add_argument("--model", type=str, default="nano", 
-                    help="YOLOv8 model size (nano, small, medium, large)")
-args = parser.parse_args()
+def get_memory_usage():
+    return psutil.Process().memory_info().rss / (1024 * 1024)
 
-# Model mapping
-model_map = {
-    "nano": "yolov8n.pt",
-    "small": "yolov8s.pt", 
-    "medium": "yolov8m.pt",
-    "large": "yolov8l.pt"
-}
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="YOLOv8 object detection with webcam")
+    parser.add_argument("--model", type=str, default="nano", 
+                        help="YOLOv8 model size (nano, small, medium, large)")
+    return parser.parse_args()
 
-# Get model filename
-if args.model in model_map:
-    model_file = model_map[args.model]
-else:
-    # Fallback: assume it's a direct filename
-    model_file = args.model
+def get_model_filename(model_name):
+    model_map = {
+        "nano": "yolov8n.pt",
+        "small": "yolov8s.pt", 
+        "medium": "yolov8m.pt",
+        "large": "yolov8l.pt"
+    }
+    
+    if model_name in model_map:
+        return model_map[model_name]
+    else:
+        return model_name
 
-# Load YOLOv8 model
-print(f"Loading {args.model} model: {model_file}")
-model = YOLO(model_file)
+def load_yolo_model(model_file, model_name):
+    print(f"Loading {model_name} model: {model_file}")
+    try:
+        model = YOLO(model_file)
+        print("Model loaded successfully")
+        return model
+    except Exception as e:
+        print(f"Failed to load model: {e}")
+        raise
 
+def initialize_webcam():
+    cap = cv2.VideoCapture(0)
+    if not cap.isOpened():
+        raise RuntimeError("Could not open webcam.")
+    
+    print("Webcam opened. Press 'q' to quit.")
+    return cap
 
-# Access COCO class names
-COCO_CLASSES = model.names
-
-# Open default webcam
-cap = cv2.VideoCapture(0)
-if not cap.isOpened():
-    print("❌ Could not open webcam.")
-    exit()
-
-print("✅ Webcam opened. Press 'q' to quit.")
-
-# Performance tracking
-frame_count = 0
-start_time = time.time()
-
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        print("❌ Failed to grab frame.")
-        break
-
-    t0 = time.time()
+def run_inference(model, frame):
+    start_time = time.time()
     results = model(frame, verbose=False)
-    t1 = time.time()
-
-    # Inference time and FPS
-    inference_time = t1 - t0
+    end_time = time.time()
+    
+    inference_time = end_time - start_time
     fps = 1.0 / inference_time if inference_time > 0 else 0
+    
+    return results, inference_time, fps
 
-    # RAM usage
-    mem_usage = psutil.Process().memory_info().rss / (1024 * 1024)  # in MB
-
+def draw_detections(frame, results, class_names):
     for r in results:
         for box in r.boxes:
             cls_id = int(box.cls[0])
             x1, y1, x2, y2 = map(int, box.xyxy[0])
-            label = COCO_CLASSES[cls_id]
+            label = class_names[cls_id]
             conf = float(box.conf[0])
 
-            # Draw bounding box and label
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
             cv2.putText(frame, f"{label} {conf:.2f}", (x1, y1 - 10),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+    
+    return frame
 
-    # Overlay performance stats
-    stats_text = f"Inference: {inference_time * 1000:.1f}ms | FPS: {fps:.1f} | RAM: {mem_usage:.1f} MB"
+def add_performance_overlay(frame, inference_time, fps, memory_usage):
+    stats_text = f"Inference: {inference_time * 1000:.1f}ms | FPS: {fps:.1f} | RAM: {memory_usage:.1f} MB"
     cv2.putText(frame, stats_text, (10, 30),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 0), 2)
+    return frame
 
-    cv2.imshow("YOLOv8 Object Detection (Mac)", frame)
+def process_video_stream(model, cap):
+    class_names = model.names
+    
+    try:
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                print("Failed to grab frame.")
+                break
 
-    if cv2.waitKey(1) & 0xFF == ord("q"):
-        break
+            results, inference_time, fps = run_inference(model, frame)
+            memory_usage = get_memory_usage()
+            frame = draw_detections(frame, results, class_names)
+            frame = add_performance_overlay(frame, inference_time, fps, memory_usage)
 
-cap.release()
-cv2.destroyAllWindows()
+            cv2.imshow("YOLOv8 Object Detection", frame)
+
+            if cv2.waitKey(1) & 0xFF == ord("q"):
+                break
+                
+    except KeyboardInterrupt:
+        print("\nInterrupted by user")
+    except Exception as e:
+        print(f"Error during video processing: {e}")
+    finally:
+        cap.release()
+        cv2.destroyAllWindows()
+
+def main():
+    try:
+        args = parse_arguments()
+        model_file = get_model_filename(args.model)
+        model = load_yolo_model(model_file, args.model)
+        cap = initialize_webcam()
+        process_video_stream(model, cap)
+        
+    except Exception as e:
+        print(f"Error: {e}")
+        return 1
+    
+    return 0
+
+if __name__ == "__main__":
+    exit(main())

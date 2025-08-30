@@ -2,6 +2,8 @@
 
 Real-time language model inference demonstrating Edge AI concepts: quantization trade-offs, performance constraints, and local processing.
 
+![TinyLlama Example](../images/example-2.gif)
+
 ## Key Concept: Quantization in Edge AI
 
 Quantization reduces model precision to make AI models smaller and faster, essential for edge deployment. This demo runs on your laptop for development and testing, simulating what will happen when deployed to edge devices like Raspberry Pi.
