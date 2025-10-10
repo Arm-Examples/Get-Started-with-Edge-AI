@@ -10,8 +10,11 @@ def get_memory_usage():
     process = psutil.Process()
     return process.memory_info().rss / (1024 * 1024)
 
-def load_prompts():
-    """Load prompts from prompts.txt file, return random prompt"""
+def load_prompts(custom_prompt=None):
+    """Load prompts from prompts.txt file or use custom prompt"""
+    if custom_prompt:
+        return custom_prompt
+    
     try:
         with open('prompts.txt', 'r') as f:
             content = f.read().strip()
@@ -132,6 +135,7 @@ def parse_arguments():
     parser.add_argument("--threads", type=int, default=4, help="Number of CPU threads")
     parser.add_argument("--ctx", type=int, default=512, help="Context window size")
     parser.add_argument("--tokens", type=int, default=128, help="Number of tokens to generate")
+    parser.add_argument("--prompt", type=str, default=None, help="Custom prompt to use (overrides prompts.txt)")
     return parser.parse_args()
 
 def main():
@@ -151,8 +155,11 @@ def main():
         llm, model_memory, model_loaded_memory = load_model(model_path, args.threads, args.ctx)
         
         # Load prompt and run inference
-        prompt = load_prompts()
-        print(f"Selected prompt: {prompt}")
+        prompt = load_prompts(args.prompt)
+        if args.prompt:
+            print(f"Using custom prompt: {prompt}")
+        else:
+            print(f"Selected prompt: {prompt}")
         
         response_text, duration, tokens_per_sec = run_inference(llm, prompt, args.tokens)
         
