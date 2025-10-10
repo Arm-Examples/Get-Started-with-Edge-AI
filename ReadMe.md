@@ -7,8 +7,8 @@ Learn Edge AI by running real examples on your machine. Instead of reading theor
 ## Clone the Repository
 
 ```bash
-git clone git@github.com:Arm-Debug/Get-Started-With-Edge-AI.git
-cd Get-Started-With-Edge-AI
+git clone https://github.com/Arm-Examples/Get-Started-with-Edge-AI.git
+cd Get-Started-with-Edge-AI
 ```
 
 Create a virtual environment to keep dependencies isolated:
@@ -23,6 +23,7 @@ source edge-ai-env/bin/activate  # On Windows: edge-ai-env\Scripts\activate
 Follow the README for each example:
 
 **[Object Detection](example_1_yolo_object_detection/)** - Compare two YOLO models in real-time video processing.
+
 <img src="images/ObjectDetection.jpg" width="400" alt="Object Detection">
 
 **Requirements:**
@@ -33,6 +34,7 @@ Follow the README for each example:
 
 
 **[Language Model with TinyLlama](example_2_tinyllama/)** - Test a chat model with different quantisation levels.
+
 <img src="images/language-model-with-tinyllama.png" width="400" alt="Language Model with TinyLlama">
 
 **Requirements:**
