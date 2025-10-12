@@ -26,22 +26,22 @@ Follow the README for each example:
 
 **[Object Detection](example_1_yolo_object_detection/)** - Compare two YOLO models in real-time video processing.
 
-<img src="images/ObjectDetection.jpg" width="400" alt="Object Detection">
-
 **Requirements:**
 
 • Laptop or computer
 
 • Camera (built-in webcam or USB camera)
 
+<img src="images/ObjectDetection.jpg" width="400" alt="Object Detection">
+
 
 **[Language Model with TinyLlama](example_2_tinyllama/)** - Test a chat model with different quantisation levels.
-
-<img src="images/language-model-with-tinyllama.png" width="400" alt="Language Model with TinyLlama">
 
 **Requirements:**
 
 • Laptop or computer
+
+<img src="images/language-model-with-tinyllama.png" width="400" alt="Language Model with TinyLlama">
 
 ---
 

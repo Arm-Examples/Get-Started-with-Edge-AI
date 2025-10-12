@@ -4,11 +4,15 @@ Real-time object detection demonstrating Edge AI concepts: model size trade-offs
 
 This demo uses YOLOv8 models from [Ultralytics](https://ultralytics.com/), a leading computer vision AI company that provides state-of-the-art YOLO models for object detection.
 
+## Hardware Requirements:
+- Laptop or Computer (MacOS Apple silicon, Linux, Windows)
+- Built-in camera or webcam
+
 ## Key Concept: Edge AI Trade-offs
 
 Edge AI runs AI models locally instead of cloud servers. This demo runs on your laptop for development and testing, simulating what will happen when deployed to edge devices like Raspberry Pi. 
 
-**Development Workflow**: The same code can run on a Raspberry Pi using containers or direct deployment - we're testing locally first to understand performance characteristics before actual edge deployment.
+**Development Workflow**: The same code can run on a Raspberry Pi using containers or direct deployment - we're testing on a development machine first to understand performance characteristics before actual edge deployment.
 
 *Note: Full Raspberry Pi deployment examples will be covered in future updates to this repository.*
 
