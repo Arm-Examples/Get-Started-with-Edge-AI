@@ -2,6 +2,8 @@
 
 Real-time object detection demonstrating Edge AI concepts: model size trade-offs, performance constraints, and local inference.
 
+This demo uses YOLOv8 models from [Ultralytics](https://ultralytics.com/), a leading computer vision AI company that provides state-of-the-art YOLO models for object detection.
+
 ## Key Concept: Edge AI Trade-offs
 
 Edge AI runs AI models locally instead of cloud servers. This demo runs on your laptop for development and testing, simulating what will happen when deployed to edge devices like Raspberry Pi. 
@@ -35,6 +37,8 @@ Edge AI runs AI models locally instead of cloud servers. This demo runs on your 
    ```bash
    python yolo_object_detection.py --model medium
    ```
+   
+   *Note: On first run, the model will be automatically downloaded (~52MB for medium). This requires an internet connection and may take a few moments.*
    
    **Observe the performance metrics** - note your inference time, FPS, and RAM usage. These represent the performance characteristics of a more accurate but resource-intensive model.
 

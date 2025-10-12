@@ -68,13 +68,29 @@ def draw_detections(frame, results, class_names):
     
     return frame
 
-def add_performance_overlay(frame, inference_time, fps, memory_usage):
-    stats_text = f"Inference: {inference_time * 1000:.1f}ms | FPS: {fps:.1f} | RAM: {memory_usage:.1f} MB"
-    cv2.putText(frame, stats_text, (10, 30),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 0), 2)
+def add_performance_overlay(frame, inference_time, fps, memory_usage, model_name):
+    stats_text = f"Model: {model_name} | Inference: {inference_time * 1000:.1f}ms | FPS: {fps:.1f} | RAM: {memory_usage:.1f} MB"
+    
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    font_scale = 1.5
+    thickness = 2
+    (text_width, text_height), baseline = cv2.getTextSize(stats_text, font, font_scale, thickness)
+    
+    overlay = frame.copy()
+    cv2.rectangle(overlay, (5, 5), (text_width + 20, text_height + 20), (0, 0, 0), -1)
+    cv2.addWeighted(overlay, 0.7, frame, 0.3, 0, frame)
+    
+    text_x, text_y = 15, text_height + 15
+    
+    cv2.putText(frame, stats_text, (text_x-1, text_y-1), font, font_scale, (0, 0, 0), thickness+1)
+    cv2.putText(frame, stats_text, (text_x+1, text_y+1), font, font_scale, (0, 0, 0), thickness+1)
+    cv2.putText(frame, stats_text, (text_x-1, text_y+1), font, font_scale, (0, 0, 0), thickness+1)
+    cv2.putText(frame, stats_text, (text_x+1, text_y-1), font, font_scale, (0, 0, 0), thickness+1)
+    
+    cv2.putText(frame, stats_text, (text_x, text_y), font, font_scale, (255, 255, 255), thickness)
     return frame
 
-def process_video_stream(model, cap):
+def process_video_stream(model, cap, model_name):
     class_names = model.names
     
     try:
@@ -87,7 +103,7 @@ def process_video_stream(model, cap):
             results, inference_time, fps = run_inference(model, frame)
             memory_usage = get_memory_usage()
             frame = draw_detections(frame, results, class_names)
-            frame = add_performance_overlay(frame, inference_time, fps, memory_usage)
+            frame = add_performance_overlay(frame, inference_time, fps, memory_usage, model_name)
 
             cv2.imshow("YOLOv8 Object Detection", frame)
 
@@ -108,7 +124,7 @@ def main():
         model_file = get_model_filename(args.model)
         model = load_yolo_model(model_file, args.model)
         cap = initialize_webcam()
-        process_video_stream(model, cap)
+        process_video_stream(model, cap, args.model)
         
     except Exception as e:
         print(f"Error: {e}")

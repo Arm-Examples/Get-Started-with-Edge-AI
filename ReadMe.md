@@ -11,12 +11,14 @@ git clone https://github.com/Arm-Examples/Get-Started-with-Edge-AI.git
 cd Get-Started-with-Edge-AI
 ```
 
-Create a virtual environment to keep dependencies isolated:
+Create and activate a virtual environment:
 
 ```bash
 python -m venv edge-ai-env
 source edge-ai-env/bin/activate  # On Windows: edge-ai-env\Scripts\activate
 ```
+
+Each example has its own `requirements.txt` - install dependencies with `pip install -r requirements.txt` in each example folder.
 
 ## Quick Examples - Get Started in a few Minutes
 
