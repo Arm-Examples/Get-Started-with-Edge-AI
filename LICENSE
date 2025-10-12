@@ -2,6 +2,17 @@ MIT License
 
 Copyright (c) 2025 Arm Examples
 
+IMPORTANT: This project includes examples that use third-party libraries with different licenses:
+
+• example_1_yolo_object_detection/: Uses Ultralytics YOLO (AGPL-3.0 License)
+  When using this example, you must comply with AGPL-3.0 requirements.
+  See: https://github.com/ultralytics/ultralytics/blob/main/LICENSE
+
+• example_2_tinyllama/: Uses llama-cpp-python and compatible libraries (MIT compatible)
+  This example follows the MIT license terms below.
+
+For the base project code and TinyLlama example:
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
