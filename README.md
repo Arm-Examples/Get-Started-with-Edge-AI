@@ -34,7 +34,6 @@ Follow the README for each example:
 
 <img src="images/ObjectDetection.jpg" width="400" alt="Object Detection">
 
-
 **[Language Model with TinyLlama](example_2_tinyllama/)** - Test a chat model with different quantisation levels.
 
 **Requirements:**
@@ -45,6 +44,6 @@ Follow the README for each example:
 
 ---
 
-### 🚀 **Coming Soon:** 
-The examples are being worked on so they can easily be deployed on a Raspberry Pi, stay tuned!
+### 🚀 **Coming Soon:**
 
+The examples are being worked on so they can easily be deployed on a Raspberry Pi, stay tuned!

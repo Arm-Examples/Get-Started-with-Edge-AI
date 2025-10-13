@@ -22,6 +22,7 @@ Quantization reduces model precision to make AI models smaller and faster, essen
 *Other quantization levels (Q2_K, Q5_K_M, Q6_K) exist but we focus on these two to demonstrate the core quantization trade-off.*
 
 **Performance metrics displayed:**
+
 - **Inference time**: Processing speed per token generation
 - **Tokens/second**: Language generation capability
 - **RAM usage**: Memory consumption
@@ -29,6 +30,7 @@ Quantization reduces model precision to make AI models smaller and faster, essen
 ## Quick Start
 
 1. Install dependencies:
+
    ```bash
    # For macOS with Apple Silicon (recommended)
    CMAKE_ARGS="-DLLAMA_METAL=on" pip install -r requirements.txt
@@ -38,36 +40,38 @@ Quantization reduces model precision to make AI models smaller and faster, essen
    ```
 
 2. Download models:
+
    ```bash
    python download_models.py
    ```
-   
+
    **What this does:**
    - Downloads pre-quantized TinyLlama models from Hugging Face
    - Source: [TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF](https://huggingface.co/TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF)
    - Gets both Q4_K_M (669MB) and Q8_0 (1.17GB) variants
    - Saves models to `models/` directory
    - Uses GGUF format optimized for llama.cpp inference
-   
+
    **About the models:**
    - **Base model**: TinyLlama-1.1B-Chat fine-tuned for conversations
    - **Quantized by**: TheBloke (community expert in model quantization)
    - **Format**: GGUF (optimized for CPU and Metal GPU inference)
    - **License**: Apache 2.0 (free for commercial use)
 
-
 3. **Test 8-bit model first** (higher quality, more resources):
+
    ```bash
    python tinyllama_benchmark.py --model Q8_0
    ```
-   
+
    **Observe the performance metrics** - note your inference time, tokens/sec, and RAM usage. This represents 8-bit quantization with better quality but higher resource requirements.
 
 4. **Switch to 4-bit model** (faster processing, fewer resources):
+
    ```bash
    python tinyllama_benchmark.py --model Q4_K_M
    ```
-   
+
    **Compare the metrics** - you should see faster inference times, higher tokens/sec, and lower RAM usage compared to the 8-bit model. The exact numbers will vary based on your machine, but the performance improvement trend will be consistent.
 
 5. **Key observations to make**:
@@ -83,6 +87,7 @@ Press Ctrl+C to quit each test.
 By testing and comparing these models, you'll understand:
 
 ### Quantization Concepts
+
 - **8-bit quantization (Q8_0)**: Higher precision, better quality, more memory usage
 - **4-bit quantization (Q4_K_M)**: Lower precision, faster inference, less memory usage
 - **Trade-off analysis**: How reducing bit precision affects model size, speed, and quality
@@ -92,9 +97,11 @@ This hands-on comparison gives you the intuition needed to make quantization dec
 ## Advanced Usage
 
 ### Custom Prompts
+
 Edit `prompts.txt` to add your own questions. Each line should contain one complete question.
 
 ### Performance Tuning
+
 ```bash
 # Use more CPU threads for faster inference
 python tinyllama_benchmark.py --model Q4_K_M --threads 8
@@ -107,7 +114,8 @@ python tinyllama_benchmark.py --model Q4_K_M --prompt "Explain edge computing in
 ```
 
 ### Command Line Options
-- `--model`: Model variant (Q4_K_M, Q8_0) 
+
+- `--model`: Model variant (Q4_K_M, Q8_0)
 - `--threads`: Number of CPU threads (default: 4)
 - `--ctx`: Context window size (default: 512)
 - `--tokens`: Number of tokens to generate (default: 128)
