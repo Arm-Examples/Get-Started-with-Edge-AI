@@ -47,3 +47,10 @@ Follow the README for each example:
 ### 🚀 **Coming Soon:**
 
 The examples are being worked on so they can easily be deployed on a Raspberry Pi, stay tuned!
+
+## Community and Support
+
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Contributing Guide](CONTRIBUTING.md)
+- [Security Policy](SECURITY.md)
+- [Support](SUPPORT.md)
