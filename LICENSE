@@ -5,13 +5,22 @@ Copyright (c) 2025 Arm Examples
 IMPORTANT: This project includes examples that use third-party libraries with different licenses:
 
 • example_1_yolo_object_detection/: Uses Ultralytics YOLO (AGPL-3.0 License)
+  - Ultralytics YOLO: AGPL-3.0 License
+  - OpenCV (cv2): Apache 2.0 License
+  - psutil: BSD-3-Clause License
   When using this example, you must comply with AGPL-3.0 requirements.
   See: https://github.com/ultralytics/ultralytics/blob/main/LICENSE
 
-• example_2_tinyllama/: Uses llama-cpp-python and compatible libraries (MIT compatible)
-  This example follows the MIT license terms below.
+• example_2_tinyllama/: Uses TinyLlama model and associated libraries
+  - TinyLlama model: Apache 2.0 License (Original: Lightning AI, Quantized: TheBloke)
+  - Source: https://huggingface.co/TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF
+  - Original TinyLlama: https://github.com/jzhang38/TinyLlama
+  - llama-cpp-python: MIT License
+  - psutil: BSD-3-Clause License
+  - huggingface-hub: Apache 2.0 License
+  When using this example, you must include Apache 2.0 license attribution for TinyLlama.
 
-For the base project code and TinyLlama example:
+For the base project code (excluding third-party models and AGPL components):
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -30,3 +39,31 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+===============================================================================
+THIRD-PARTY LICENSES AND ATTRIBUTIONS
+===============================================================================
+
+TinyLlama Model (example_2_tinyllama/)
+--------------------------------------
+This project uses the TinyLlama language model, which is licensed under Apache 2.0.
+
+Original TinyLlama Copyright (c) 2023 Lightning AI
+Authors: Peiyuan Zhang, Guangtao Zeng, Tianduo Wang, Wei Lu (StatNLP Research Group, SUTD)
+Quantized version by TheBloke
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Sources:
+- Original TinyLlama: https://github.com/jzhang38/TinyLlama
+- Quantized models: https://huggingface.co/TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF
