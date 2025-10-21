@@ -1,0 +1,4 @@
+picamera2==0.3.31
+ultralytics==8.3.215
+opencv-python==4.12.0.88
+streamlit==1.51.0

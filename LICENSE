@@ -7,7 +7,8 @@ IMPORTANT: This project includes examples that use third-party libraries with di
 • example_1_yolo_object_detection/: Uses Ultralytics YOLO (AGPL-3.0 License)
   - Ultralytics YOLO: AGPL-3.0 License
   - OpenCV (cv2): Apache 2.0 License
-  - psutil: BSD-3-Clause License
+  - Streamlit: Apache 2.0 License
+  - picamera2: BSD-2-Clause License (Raspberry Pi only)
   When using this example, you must comply with AGPL-3.0 requirements.
   See: https://github.com/ultralytics/ultralytics/blob/main/LICENSE
 
