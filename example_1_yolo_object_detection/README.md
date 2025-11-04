@@ -1,8 +1,8 @@
-# YOLOv8 Object Detection - Edge AI Demo
+# Object Detection using Ultralytics YOLO11
 
 Real-time object detection demonstrating Edge AI concepts: model size trade-offs, performance constraints, and local inference.
 
-This demo uses YOLOv8 models from [Ultralytics](https://ultralytics.com/), a leading computer vision AI company that provides state-of-the-art YOLO models for object detection.
+This demo uses [Ultralytics](https://ultralytics.com/) YOLO11 model. Ultralytics is a world leader in creating state-of-the-art computer vision tools for AI applications. Their YOLO (You Only Look Once) models set the standard for real-time object detection, balancing speed and accuracy at every scale. 
 
 ## Hardware Requirements
 

@@ -24,7 +24,7 @@ Each example has its own `requirements.txt` - install dependencies with `pip ins
 
 Follow the README for each example:
 
-**[Object Detection](example_1_yolo_object_detection/)** - Compare two YOLO models in real-time video processing.
+**[Object Detection](example_1_yolo_object_detection/)** - Compare two Ultralytics YOLO models in real-time video processing.
 
 **Requirements:**
 
@@ -34,6 +34,7 @@ Follow the README for each example:
 
 <img src="images/ObjectDetection.jpg" width="400" alt="Object Detection">
 
+----------
 **[Language Model with TinyLlama](example_2_tinyllama/)** - Test a chat model with different quantisation levels.
 
 **Requirements:**

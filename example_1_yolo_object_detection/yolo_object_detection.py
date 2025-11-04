@@ -10,22 +10,24 @@ def get_memory_usage():
 
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description="YOLOv8 object detection with webcam")
+    parser = argparse.ArgumentParser(
+        description="Ultralytics YOLO11 object detection with webcam"
+    )
     parser.add_argument(
         "--model",
         type=str,
         default="nano",
-        help="YOLOv8 model size (nano, small, medium, large)",
+        help="YOLO11 model size (nano, small, medium, large)",
     )
     return parser.parse_args()
 
 
 def get_model_filename(model_name):
     model_map = {
-        "nano": "yolov8n.pt",
-        "small": "yolov8s.pt",
-        "medium": "yolov8m.pt",
-        "large": "yolov8l.pt",
+        "nano": "yolo11n.pt",
+        "small": "yolo11s.pt",
+        "medium": "yolo11m.pt",
+        "large": "yolo11l.pt",
     }
 
     if model_name in model_map:
@@ -106,43 +108,6 @@ def add_performance_overlay(frame, inference_time, fps, memory_usage, model_name
     cv2.putText(
         frame,
         stats_text,
-        (text_x - 1, text_y - 1),
-        font,
-        font_scale,
-        (0, 0, 0),
-        thickness + 1,
-    )
-    cv2.putText(
-        frame,
-        stats_text,
-        (text_x + 1, text_y + 1),
-        font,
-        font_scale,
-        (0, 0, 0),
-        thickness + 1,
-    )
-    cv2.putText(
-        frame,
-        stats_text,
-        (text_x - 1, text_y + 1),
-        font,
-        font_scale,
-        (0, 0, 0),
-        thickness + 1,
-    )
-    cv2.putText(
-        frame,
-        stats_text,
-        (text_x + 1, text_y - 1),
-        font,
-        font_scale,
-        (0, 0, 0),
-        thickness + 1,
-    )
-
-    cv2.putText(
-        frame,
-        stats_text,
         (text_x, text_y),
         font,
         font_scale,
@@ -169,7 +134,7 @@ def process_video_stream(model, cap, model_name):
                 frame, inference_time, fps, memory_usage, model_name
             )
 
-            cv2.imshow("YOLOv8 Object Detection", frame)
+            cv2.imshow("YOLO11 Object Detection", frame)
 
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 break

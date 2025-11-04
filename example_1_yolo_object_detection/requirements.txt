@@ -1,4 +1,3 @@
-# YOLOv8 Object Detection Edge AI Demo Dependencies
-ultralytics>=8.0.0
+ultralytics>=8.3.224
 opencv-python>=4.5.0
 psutil>=5.8.0
