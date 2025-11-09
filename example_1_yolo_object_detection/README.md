@@ -6,7 +6,7 @@ This demo uses [Ultralytics](https://ultralytics.com/) YOLO11 model. Ultralytics
 
 ## 🎬 Demo
 
-![YOLO11 Object Detection Demo](demo.gif)
+![YOLO11 Object Detection Demo](./images/demo.gif)
 
 ---
 

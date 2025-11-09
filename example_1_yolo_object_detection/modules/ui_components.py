@@ -40,16 +40,18 @@ def render_header():
 
 def render_arm_logo():
     """Render Arm logo at top of sidebar."""
+    # Center the image using columns
+    col1, col2, col3 = st.sidebar.columns([1, 2, 1])
+    with col2:
+        st.image("images/arm-logo-white-rgb.svg", width=150)
+    
     st.sidebar.markdown(
         """
-        <div style="text-align: center; margin-bottom: 20px;">
-            <img src="https://www.arm.com/-/media/global/logos/arm-logo-white-rgb.svg" width="150">
-            <p style="font-size: 12px; color: #888; margin-top: 8px;">
-                <a href="https://developer.arm.com/edge-ai" target="_blank" style="color: #58D3F7; text-decoration: none;">
-                    Learn more about Edge AI →
-                </a>
-            </p>
-        </div>
+        <p style="font-size: 12px; color: #888; margin-top: 8px; text-align: center;">
+            <a href="https://developer.arm.com/edge-ai" target="_blank" style="color: #58D3F7; text-decoration: none;">
+                Learn more about Edge AI at arm
+            </a>
+        </p>
         """,
         unsafe_allow_html=True,
     )
