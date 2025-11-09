@@ -4,137 +4,134 @@ Real-time object detection demonstrating Edge AI concepts: model size trade-offs
 
 This demo uses [Ultralytics](https://ultralytics.com/) YOLO11 model. Ultralytics is a world leader in creating state-of-the-art computer vision tools for AI applications. Their YOLO (You Only Look Once) models set the standard for real-time object detection, balancing speed and accuracy at every scale. 
 
-## Hardware Requirements
+## 🎬 Demo
 
-- Laptop or Computer (MacOS Apple silicon, Linux, Windows)
-- Built-in camera or webcam
+![YOLO11 Object Detection Demo](./images/demo.gif)
 
-## Key Concept: Edge AI Trade-offs
+---
 
-Edge AI runs AI models locally instead of cloud servers. This demo runs on your laptop for development and testing, simulating what will happen when deployed to edge devices like Raspberry Pi.
+### 💻 Hardware Requirements
+### Development Machine
+- **Laptop/Computer**: MacOS, Linux, or Windows
+- **Camera**: Built-in webcam or USB camera
+- **RAM**: 4GB minimum (8GB recommended)
 
-**Development Workflow**: The same code can run on a Raspberry Pi using containers or direct deployment - we're testing on a development machine first to understand performance characteristics before actual edge deployment.
+### Raspberry Pi Deployment (Same Code, No Changes!)
+- **Board**: Raspberry Pi 4 or 5 (4GB+ RAM recommended)
+- **OS**: Raspberry Pi OS (64-bit, Full Desktop)
+  
+  <img src="../images/RPi_OS.png" width="400" alt="Raspberry Pi OS Selection">
+  
+- **Camera**: Pi Camera Module 2/3 or USB webcam
+- **Storage**: 16GB+ microSD card
 
-*Note: Full Raspberry Pi deployment examples will be covered in future updates to this repository.*
+---
 
-**Two models to compare:**
+### 🚀 Quick Start (3 Steps)
 
-| Model | Size | Speed | Accuracy | Resource Usage |
-|-------|------|-------|----------|----------------|
-| **medium** | ~52MB | Moderate | Higher | More CPU/RAM |
-| **nano** | ~6MB | Fastest | Good | Less CPU/RAM |
+### 1. Install Dependencies
 
-*Other variants (small, large, xlarge) exist but we focus on these two to demonstrate the core trade-off.*
 
-**Performance metrics overlay:**
+**Only execute on Raspberry Pi:**
+```bash
+sudo apt update
+sudo apt install -y python3-pip python3-venv python3-opencv libcap-dev
+```
+**For all (including RPi):**
+```bash
+# Create virtual environment (recommended)
+python -m venv edge-ai-env
+source edge-ai-env/bin/activate  # Windows: edge-ai-env\Scripts\activate
+```
+For MacOS, Linux, Windows:
+```bash
+# Install requirements
+pip install -r requirements.txt
+```
+For RPi:
+```bash
+pip install -r requirements_pi.txt
+```
 
-- **Inference time**: Processing speed per frame
-- **FPS**: Real-time capability  
-- **RAM usage**: Memory consumption
+### 2. Launch the App
+```bash
+streamlit run YOLO11_Example.py
+```
 
-## Quick Start
+### 3. Start Experimenting!
+Your browser will open automatically at `http://localhost:8501`. Start detecting objects, segmenting scenes, or tracking poses immediately!
 
-1. Install dependencies:
+---
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+### 🎯 How to Use the App
 
-2. **Test medium model first** (higher accuracy, more resources):
+### Choose Your Input Source
+- **📹 Video File**: Upload MP4/AVI files to analyze pre-recorded footage
+- **📷 Camera**: Live feed from your webcam (desktop) or Pi Camera (Raspberry Pi)
 
-   ```bash
-   python yolo_object_detection.py --model medium
-   ```
+### Select a Vision Task
 
-   *Note: On first run, the model will be automatically downloaded (~52MB for medium). This requires an internet connection and may take a few moments.*
+| Task | What It Does | Use Cases |
+|------|-------------|-----------|
+| **Detection** | Draws boxes around objects | Security, counting, tracking |
+| **Segmentation** | Precise pixel-level masks | Scene understanding, robotics |
+| **Pose Estimation** | Detects human body keypoints | Fitness, sports analysis, HCI |
 
-   **Observe the performance metrics** - note your inference time, FPS, and RAM usage. These represent the performance characteristics of a more accurate but resource-intensive model.
+### Pick Your Model Size
 
-3. **Switch to nano model** (faster processing, fewer resources):
+The app automatically detects your platform and shows appropriate options:
 
-   ```bash
-   python yolo_object_detection.py --model nano
-   ```
+**Nano**
+- ⚡ Fastest inference
+- 💾 Lowest memory usage
+- ✅ Best for: Real-time on Raspberry Pi, battery devices
+- 📊 Accuracy: Good for most applications
 
-   **Compare the metrics** - you should see faster inference times, higher FPS, and lower RAM usage compared to the medium model. The exact numbers will vary based on your machine, but the performance improvement trend will be consistent.
+**Small**
+- ⚖️ Balanced performance
+- ✅ Best for: General purpose edge deployment
+- 📊 Accuracy: Better than nano, still efficient
 
-4. **Key observations to make**:
-   - How much faster is inference time with nano vs. medium?
-   - What's the FPS difference between the two models?
-   - How much less RAM does the nano model use?
-   - Is there a noticeable difference in detection accuracy?
+**Medium**
+- 🎯 Higher accuracy
+- 💪 More processing power needed
+- ✅ Best for: Desktop testing, when accuracy matters most
+- 📊 Accuracy: Excellent detection quality
 
-Press 'q' to quit each test.
+### Monitor Performance
+Real-time metrics show you:
+- **Overall FPS**: AI model speed + Streamlit UI overhead
+- **Inference FPS**: Pure AI model speed
+- **Inference Time**: Milliseconds per frame
 
-## Edge AI Learning Objectives
+---
 
-### 1. Experience the Core Trade-off
+### 🎓 Learning Objectives
 
-By running both models, you'll directly observe:
+### 1. Edge AI Fundamentals
+- **Local Processing**: All AI runs on your device—no cloud needed
+- **Privacy**: Video never leaves your machine
+- **Latency**: Instant responses vs. cloud round-trips
+- **Reliability**: Works offline, no internet dependency
 
-- **Medium model**: Higher accuracy, more resource usage
-- **Nano model**: Faster processing, lower resource usage
-- **Performance impact**: How model size affects inference speed, FPS, and memory
+### 2. Performance Constraints
+- See how model size impacts speed in real-time
+- Understand FPS requirements for different applications
+- Learn when "smaller and faster" beats "larger and more accurate"
 
-### 2. Understand Deployment Constraints
+### 3. Vision AI Capabilities
+- Experiment with detection, segmentation, and pose estimation
+- Understand which task fits which application
+- See how task complexity affects performance
 
-- **Development vs. Edge**: Laptop testing proves the code logic and integration work - if it fails on edge devices, it's almost always due to resource constraints
-- **Code portability**: The same Python code can run on Pi using containers or direct deployment
-- **Real-time requirements**: Some applications need consistent frame rates
-For edge deployment, consider:
-- **Target hardware**: Raspberry Pi vs. other embedded devices
-- **Power constraints**: Battery life and power consumption on edge devices
-- **Accuracy requirements**: Sometimes "good enough" is better than "perfect"
-- **Real-time needs**: Can you afford 100ms latency or do you need <10ms?
+### 4. Deployment Workflow
+- Test rapidly on development machine
+- Deploy seamlessly to edge hardware
+- Monitor performance metrics in production
+---
 
-### 3. Local Processing Benefits
+### 🛠️ Technical Details
 
-This demo runs entirely offline, demonstrating:
+**Auto-Platform Detection**: The app detects if it's running on Raspberry Pi and automatically:
 
-- **Privacy**: No data sent to external servers
-- **Latency**: No network delays
-- **Reliability**: Works without internet connection
-- **Cost**: No cloud API charges
-
-## Real-World Edge AI Applications
-
-This object detection demo simulates scenarios like:
-
-- **Smart security cameras**: Detecting people/vehicles without cloud connectivity
-- **Industrial inspection**: Quality control on manufacturing lines  
-- **Retail analytics**: Customer behavior analysis at the edge
-- **Agricultural monitoring**: Crop and livestock monitoring with drones
-
-## Performance Optimization Tips
-
-### For Edge Deployment
-
-1. **Start with nano model** - upgrade only if accuracy isn't sufficient
-2. **Monitor memory usage** - ensure it fits your target device
-3. **Test thermal performance** - sustained processing may cause throttling
-4. **Consider quantization** - further reduce model size if needed
-5. **Optimize input resolution** - lower resolution = faster processing
-
-## Controls
-
-- **Press 'q'**: Quit the application
-- **Webcam required**: Make sure your camera is connected and accessible
-
-## Troubleshooting
-
-### Common Issues
-
-- **Webcam not found**: Check camera permissions and connections
-- **Low FPS**: Try a smaller model (nano/small) or reduce resolution
-- **High memory usage**: Switch to a smaller model variant
-- **Model download fails**: Check internet connection for initial download
-
-### Performance Tips
-
-- Close other applications to free up system resources
-- Ensure good lighting for better detection accuracy
-- Position camera for optimal viewing angle
-
-This demo provides hands-on experience with the core challenges and trade-offs in Edge AI deployment. You're testing the same code that can run on edge devices like Raspberry Pi, using your laptop as a development environment to understand performance characteristics before actual deployment.
-
-**Future Examples**: Complete Raspberry Pi deployment tutorials (including containerization and optimization) will be added to this repository in future updates.
+**Model Auto-Download**: First time you select a model, it downloads automatically. Subsequent runs use cached models.
