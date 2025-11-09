@@ -4,6 +4,10 @@ Real-time object detection demonstrating Edge AI concepts: model size trade-offs
 
 This demo uses [Ultralytics](https://ultralytics.com/) YOLO11 model. Ultralytics is a world leader in creating state-of-the-art computer vision tools for AI applications. Their YOLO (You Only Look Once) models set the standard for real-time object detection, balancing speed and accuracy at every scale.
 
+## 🎬 Demo
+
+![YOLO11 Object Detection Demo](demo.gif)
+
 ---
 
 ### 💻 Hardware Requirements
