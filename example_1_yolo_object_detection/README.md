@@ -6,24 +6,51 @@ This demo uses [Ultralytics](https://ultralytics.com/) YOLO11 model. Ultralytics
 
 ## 🎬 Demo
 
+> ⏱️ **Time to Complete**: 10-15 minutes from setup to running the example.
+
 ![YOLO11 Object Detection Demo](images/demo.gif)
 
 ---
 
-### 💻 Hardware Requirements
-### Development Machine
-- **Laptop/Computer**: MacOS, Linux, or Windows
+### 💻 Can I Run This Without a Raspberry Pi?
+
+**Yes! This demo runs perfectly on just your laptop.**
+
+- ✅ **Laptop Only**: Works great with MacOS, Linux, or Windows using your built-in webcam
+- ✅ **Raspberry Pi (Optional but Recommended)**: Experience true edge deployment and performance constraints
+
+> **The Raspberry Pi is completely optional.** It's recommended for learning about real-world edge AI deployment constraints, but all features work identically on your laptop.
+
+### Prerequisites
+
+- **Python 3.8+**: This demo requires Python 3.8 or later installed on your system.
+
+---
+
+###  Hardware Requirements
+
+### Laptop/Desktop Only (No Raspberry Pi Needed!)
+- **Computer**: MacOS, Linux, or Windows
 - **Camera**: Built-in webcam or USB camera
 - **RAM**: 4GB minimum (8GB recommended)
+- **That's it!** You're ready to explore Edge AI concepts
 
-### Raspberry Pi Deployment (Same Code, No Changes!)
+> **⚠️ Note:** WSL (Windows Subsystem for Linux) is **not supported** because this demo requires direct camera access, which WSL does not provide. Windows users should run this demo in native Windows with Python installed.
+
+### For Raspberry Pi Deployment (Optional - Recommended for Edge Experience)
+Deploy the **exact same code** to experience real edge AI constraints:
+
 - **Board**: Raspberry Pi 4 or 5 (4GB+ RAM recommended)
 - **OS**: Raspberry Pi OS (64-bit, Full Desktop)
   
   <img src="../images/RPi_OS.png" width="400" alt="Raspberry Pi OS Selection">
   
-- **Camera**: Pi Camera Module 2/3 or USB webcam
+- **Camera**: Pi Camera Module 2/3
+  - For Pi Camera setup instructions, see [Raspberry Pi Camera Installation Guide](https://www.raspberrypi.com/documentation/accessories/camera.html#install-a-raspberry-pi-camera)
+  - Once connected properly, the installation steps in the next section will install the required software
 - **Storage**: 16GB+ microSD card
+
+> **Why try Raspberry Pi?** Experience authentic edge computing constraints: limited CPU/RAM, thermal throttling, and power efficiency challenges—all while running the exact same code!
 
 ---
 
@@ -57,6 +84,8 @@ pip install -r requirements_pi.txt
 ```bash
 streamlit run YOLO11_Example.py
 ```
+
+> **Note:** When launching the app for the first time, Streamlit may ask for your email address. Arm is not collecting any data or expecting your email. Feel free to leave this blank and press Enter to continue.
 
 ### 3. Start Experimenting!
 Your browser will open automatically at `http://localhost:8501`. Start detecting objects, segmenting scenes, or tracking poses immediately!
