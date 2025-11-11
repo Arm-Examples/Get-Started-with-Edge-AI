@@ -165,7 +165,7 @@ def run_camera_stream(
             # Display metrics below the feed
             with stats_placeholder.container():
                 display_metrics(
-                    overall_fps, inference_fps, avg_inference_time, yolo_enabled, source
+                    overall_fps, inference_fps, avg_inference_time, yolo_enabled, source, task
                 )
 
     finally:

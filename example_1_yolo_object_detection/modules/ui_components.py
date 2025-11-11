@@ -72,6 +72,59 @@ def render_arm_logo():
     )
 
 
+def render_detectable_objects_banner(yolo_enabled, task):
+    """Render subtle banner showing common detectable objects above metrics."""
+    if yolo_enabled:
+        # Match video feed layout: [1, 2, 1] with banner filling the center column
+        left_pad, center_col, right_pad = st.columns([1, 2, 1])
+        
+        with center_col:
+            if task == "Pose Estimation":
+                st.markdown(
+                    """
+                    <div style='background-color: #2a2a2a; 
+                                padding: 8px 15px; 
+                                border-radius: 6px; 
+                                border-left: 3px solid #f59e0b;
+                                margin-bottom: 15px;
+                                text-align: center;'>
+                        <p style='color: #fbbf24; margin: 0; font-size: 12px;'>
+                            ℹ️ Pose estimation detects people and tracks body keypoints
+                        </p>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+            else:
+                st.markdown(
+                    """
+                    <div style='background-color: #2a2a2a; 
+                                padding: 8px 15px; 
+                                border-radius: 6px; 
+                                border-left: 3px solid #58D3F7;
+                                margin-bottom: 15px;
+                                text-align: center;'>
+                        <p style='color: #B8B8B8; 
+                                  margin: 0; 
+                                  font-size: 12px; 
+                                  line-height: 1.5;'>
+                            🎯 Detects: 👤 People • 🚗 Vehicles • 🐕 Animals • 🪑 Furniture • 📱 Electronics • 🎒 Accessories
+                        </p>
+                        <p style='color: #888; 
+                                  margin: 4px 0 0 0; 
+                                  font-size: 11px;'>
+                            <a href="https://github.com/ultralytics/ultralytics/blob/main/ultralytics/cfg/datasets/coco.yaml" 
+                               target="_blank" 
+                               style="color: #58D3F7; text-decoration: none;">
+                                See full list of 80 objects →
+                            </a>
+                        </p>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+
+
 def get_model_options(task):
     """Get available models for a given task."""
     models = {
@@ -87,6 +140,29 @@ def setup_sidebar():
     # Add spacing above YOLO toggle
     st.sidebar.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
 
+    # Prominent instruction box above the checkbox
+    st.sidebar.markdown(
+        """
+        <div style='background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8a 100%); 
+                    padding: 15px; 
+                    border-radius: 10px; 
+                    border: 2px solid #58D3F7;
+                    margin-bottom: 10px;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+                    text-align: center;'>
+            <p style='color: #58D3F7; 
+                      font-size: 14px; 
+                      font-weight: bold; 
+                      margin: 0;
+                      text-transform: uppercase;
+                      letter-spacing: 1px;'>
+                👇Enable/Disable YOLO
+            </p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
     # YOLO toggle at the top (will be used for non-video sources)
     yolo_enabled = st.sidebar.checkbox(
         "🎯 Enable YOLO Detection",
@@ -97,7 +173,7 @@ def setup_sidebar():
 
     # Compact separator with reduced margins
     st.sidebar.markdown(
-        "<hr style='margin-top: 10px; margin-bottom: 10px;'>", unsafe_allow_html=True
+        "<hr style='margin-top: 15px; margin-bottom: 10px;'>", unsafe_allow_html=True
     )
 
     st.sidebar.title("Settings")
@@ -157,9 +233,12 @@ def upload_video():
 
 
 def display_metrics(
-    overall_fps, inference_fps, avg_inference_time, yolo_enabled, source
+    overall_fps, inference_fps, avg_inference_time, yolo_enabled, source, task
 ):
-    """Display performance metrics."""
+    """Display performance metrics with detectable objects banner above."""
+    # Show detectable objects banner above metrics
+    render_detectable_objects_banner(yolo_enabled, task)
+    
     st.markdown(
         "<h4 style='text-align: center;'>⚡ Performance Metrics</h4>",
         unsafe_allow_html=True,

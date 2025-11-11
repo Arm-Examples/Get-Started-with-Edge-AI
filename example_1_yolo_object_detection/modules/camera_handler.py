@@ -40,6 +40,7 @@ class PiCameraThread(threading.Thread):
             while not self.stop_event.is_set():
                 try:
                     frame = self.camera.capture_array()
+                    frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
                     try:
                         self.frame_queue.put(frame, block=False)
                     except Exception:
